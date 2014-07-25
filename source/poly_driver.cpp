@@ -12,9 +12,11 @@ int main(int argc,char *argv[])
 
 	if(argc == 1)
 	{
+		std::cout<<"\n\n**********************************************\n";
 		std::cout<<"usage: ./dlny.exe <algorithm>\n";
 		std::cout<<"For centroid insertion use ./dlny.exe cen\n";
 		std::cout<<"For Bowyer Watson use ./dlny.exe bw\n";
+		std::cout<<"**********************************************\n\n";
 	}
 	else
 	{
