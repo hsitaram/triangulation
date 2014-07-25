@@ -1,6 +1,16 @@
 #include"edge.h"
 
+//==========================================================
 bool edge::edgeintersect(edge e)
+{
+	double intx,inty;
+	bool intersectflag;
+
+	intersectflag=edgeintersect(e,intx,inty);
+	return(intersectflag);
+}
+//==========================================================
+bool edge::edgeintersect(edge e,double &intx,double &inty)
 {
 	double x1,y1;
 	double x2,y2;
@@ -9,57 +19,51 @@ bool edge::edgeintersect(edge e)
 
 	double px,py;
 	double dtr,ntr1,ntr2;
-	double dist1,dist2;
-	double len1,len2,dotp1,dotp2;
-
-	bool parallel, coincident;
+	double dotp1,dotp2;
+	bool intersectflag;
 
 	x1=start[0]; y1=start[1];
 	x2=end[0];   y2=end[1];
 
 	e.getendpoints(x3,y3,x4,y4);
 
-	len1 = length;
-	len2 = e.getlength();
-
 	dtr = (x1-x2)*(y3-y4)-(y1-y2)*(x3-x4);
 
 	ntr1 = (x1*y2-y1*x2)*(x3-x4) - (x1-x2)*(x3*y4-y3*x4);
 	ntr2 = (x1*y2-y1*x2)*(y3-y4) - (y1-y2)*(x3*y4-y3*x4);
 
-	coincident=false;
-	parallel = false;
-
 	if(fabs(dtr) < TOL)
 	{
-		parallel=true;
 		if(fabs(ntr1) < TOL && fabs(ntr2) < TOL)
 		{
-			coincident=true;
-			return(true);
+			intersectflag=true;
 		}	
 		else
 		{
-			return(false);
+			intersectflag=false;
 		}
-	}
-
-	px = ntr1/dtr; py=ntr2/dtr;
-
-	dotp1=(px-x1)*(px-x2)+(py-y1)*(py-y2);
-	dotp2=(px-x3)*(px-x4)+(py-y3)*(py-y4);
-
-	if(dotp1<=TOL && dotp2<=TOL)
-	{
-		return(true);
 	}
 	else
 	{
-		return(false);
+		px = ntr1/dtr; py=ntr2/dtr;
+		intx = px; inty = py;
+
+		dotp1=(px-x1)*(px-x2)+(py-y1)*(py-y2);
+		dotp2=(px-x3)*(px-x4)+(py-y3)*(py-y4);
+
+		if(dotp1<=TOL && dotp2<=TOL)
+		{
+			intersectflag=true;
+		}
+		else
+		{
+			intersectflag=false;
+		}
 	}
+
+	return(intersectflag);
 	
 }
-
 //==========================================================
 bool edge::isitsame(edge e)
 {

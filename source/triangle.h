@@ -10,7 +10,7 @@ class triangle
 
 	int pointids[3];
 
-	void findcircumcenter();
+	void findcircumcenter(std::string str="nil");
 	void findarea();
 	void findavgsidelength();
 
@@ -18,17 +18,21 @@ class triangle
 	
 	double circ_x,circ_y,circrad;
 	double area,avglen;
-	std::vector<int> edgeids;
+	int edgeids[3];
 	double centroid[2];
+	int edgepos;
 	
 	void setvertices(double px1,double py1,double px2,double py2,
-			double px3,double py3,int pid1,int pid2,int pid3)
+			double px3,double py3,int pid1,int pid2,int pid3,std::string str="nil")
 	{
-		x1=px1; x2=px2; x3=px3; y1=py1; y2=py2; y3=py3;
-		pointids[0]=pid1; pointids[1]=pid2; pointids[2]=pid3;
+		x1=px1; x2=px2; x3=px3; 
+		y1=py1; y2=py2; y3=py3;
+		pointids[0]=pid1; 
+		pointids[1]=pid2; 
+		pointids[2]=pid3;
 		
-		edgeids.resize(0);
-		findcircumcenter();
+		edgepos=0;
+		findcircumcenter(str);
 		findarea();
 		findavgsidelength();
 		centroid[0]=0.33333*(x1+x2+x3);

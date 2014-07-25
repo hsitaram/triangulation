@@ -20,6 +20,7 @@ class edge
 	public:
 		int adjcellids[2];
 		int nodeids[2];
+		double A,B,C;
 
 		void setedgeparams(double x1,double y1,double x2,double y2,int id1=-1,int id2=-1)
 		{ 
@@ -28,6 +29,7 @@ class edge
 			length = sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
 			nodeids[0]=id1;    nodeids[1]=id2;
 			adjcellids[0]=-1;  adjcellids[1]=-1;
+			A = (y2-y1); B=-(x2-x1); C=y1*(x2-x1)-x1*(y2-y1);
 		}
 
 		void getendpoints(double *first,double *last)
@@ -44,7 +46,14 @@ class edge
 
 		void substitutelrcell(int oldcellnum,int newcellnum);
 		bool edgeintersect(edge e);
+		bool edgeintersect(edge e,double &intx,double &inty);
 		bool isitsame(edge e);
+
+		void printendpoints()
+		{
+			std::cout<<"edge end points:"<<start[0]<<"\t"<<
+				start[1]<<"\t"<<end[0]<<"\t"<<end[1]<<"\n";
+		}
 
 };
 #endif

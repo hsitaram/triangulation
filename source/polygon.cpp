@@ -58,7 +58,7 @@ void polygon::findearandreflexpoints()
 	reflexpoints.resize(0);
 	npoints=polyearcutpoints.size();
 
-	for(unsigned int i=0;i<npoints;i++)
+	for(int i=0;i<npoints;i++)
 	{
 		ahead=(i+1)%npoints;
 		behind=(i+npoints-1)%npoints;
@@ -202,7 +202,7 @@ void polygon::cutear()
 		
 	}
 
-	std::cout<<"total number of triangles:"<<polytriangles.size()<<"\n";
+	//std::cout<<"total number of triangles:"<<polytriangles.size()<<"\n";
 }
 //=================================================================================================
 void polygon::printtriangles()
@@ -216,5 +216,77 @@ void polygon::printtriangles()
 	}
 
 	outfile.close();
+}
+//=================================================================================================
+bool polygon::ispointinside(double px,double py)
+{
+	int numintersects;
+	edge e;
+	double maxx;
+	double factor;
+	maxx=-3e8;
+	factor=3;
+	bool inside;
+	double intx,inty;
+	bool intersects,pointexists;
+	std::vector<double> intersectedpoints;
+	int nintersectedpoints;
+	double dist2;
+	
+	intersectedpoints.resize(0);
+
+	for(int i=0;i<numpoints;i++)
+	{
+		if(allpoints[DIM*i] > maxx)
+		{
+			maxx=allpoints[DIM*i];
+		}	
+	}	
+
+	e.setedgeparams(px,py,maxx*factor,py);
+	
+
+	numintersects=0;
+	for(int i=0;i<numpoints;i++)
+	{
+		intersects=polyedges[i].edgeintersect(e,intx,inty);
+
+		if(intersects)
+		{
+			nintersectedpoints=intersectedpoints.size()/2;
+			pointexists=false;
+		
+			for(int k=0;k<nintersectedpoints;k++)
+			{
+				dist2 = (intx-intersectedpoints[2*k])*(intx-intersectedpoints[2*k]);
+				dist2 += (inty-intersectedpoints[2*k+1])*(inty-intersectedpoints[2*k+1]);
+		
+				if(dist2 < TOL)
+				{
+					pointexists=true;
+				}
+			}
+
+			if(!pointexists)
+			{
+				numintersects+=1;
+				intersectedpoints.push_back(intx);
+				intersectedpoints.push_back(inty);
+			}
+		}
+	}
+
+	//std::cout<<"no: of intersects:"<<numintersects<<"\n";
+
+	if(numintersects%2 == 1)
+	{
+		inside=true;
+	}
+	else
+	{
+		inside=false;
+	}
+
+	return(inside);
 }
 //=================================================================================================

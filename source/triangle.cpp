@@ -23,7 +23,7 @@ void triangle::findavgsidelength()
 	avglen = 0.333333*avglen;
 }
 //==============================================================================================
-void triangle::findcircumcenter()
+void triangle::findcircumcenter(std::string str)
 {
 
 	double Sx,Sy,a;
@@ -35,7 +35,9 @@ void triangle::findcircumcenter()
 
 	if(fabs(a)<=TOL)
 	{
+		std::cout<<str<<"\n";
 		std::cout<<"ERROR:0 area for triangle\n";
+		std::cout<<x1<<" "<<y1<<" "<<x2<<" "<<y2<<" "<<x3<<" "<<y3<<"\n";
 		std::cout<<"a="<<a<<"\n";
 		std::cout<<"SX="<<Sx<<"\n";
 		std::cout<<"SY="<<Sy<<"\n";
@@ -93,6 +95,7 @@ void triangle::getotheredgeids(int me,int other[2])
 			if(pos==2)
 			{
 				std::cout<<"error:no matching edge in getotheredgeids\n";
+				std::cout<<"me:"<<me<<"\n";
 			}
 			else
 			{

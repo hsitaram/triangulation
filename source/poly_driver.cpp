@@ -1,42 +1,62 @@
 #include"polygon.h"
 #include"triangulation.h"
+#include<cstdlib>
 
-int main()
+int main(int argc,char *argv[])
 {
+	std::string option;
 	int n;
 	double *p;
         polygon pgon;
 	triangulation triobj;
 
-	std::ifstream infile;
-	infile.open("polypoints.inp");
-
-	infile>>n;
-	
-	p = new double[DIM*n];
-	for(int i=0;i<n;i++)
+	if(argc == 1)
 	{
-		infile>>p[DIM*i]>>p[DIM*i+1];
+		std::cout<<"usage: ./dlny.exe <algorithm>\n";
+		std::cout<<"For centroid insertion use ./dlny.exe cen\n";
+		std::cout<<"For Bowyer Watson use ./dlny.exe bw\n";
 	}
-	infile.close();
-	
+	else
+	{
+		option=argv[1];
+		std::ifstream infile;
+		infile.open("polypoints.inp");
 
-	pgon.assignpolypoints(p,n);
-	pgon.printpoints();
+		infile>>n;
 
-	pgon.cutear();
-	pgon.printtriangles();
+		p = new double[DIM*n];
+		for(int i=0;i<n;i++)
+		{
+			infile>>p[DIM*i]>>p[DIM*i+1];
+		}
+		infile.close();
 
-	triobj.assign_nodes(pgon.allpoints);
-	triobj.assign_triangles(pgon.polytriangles);
 
-	std::cout<<"minlength:"<<pgon.minlength<<"\n";
-	triobj.delaunay(pgon.minlength);
+		pgon.assignpolypoints(p,n);
+		pgon.printpoints();
+		pgon.cutear();
+		pgon.printtriangles();
 
-	triobj.printtridata();
-	triobj.printtrianglesgnuplot();
-	triobj.printtrianglesvtu();
+		triobj.setpolydomain(&pgon);
+		std::cout<<"minlength:"<<pgon.minlength<<"\n";
 
+		if(option=="bw")
+		{
+			triobj.bwalgorithm(pgon.minlength);
+		}
+		else if(option=="cen")
+		{
+			triobj.centroidinsert(pgon.minlength);
+		}
+		else
+		{
+			triobj.centroidinsert(pgon.minlength);
+		}
+
+		triobj.printtridata();
+		triobj.printtrianglesgnuplot();
+		triobj.printtrianglesvtu();
+	}
 
 	return(0);
 }

@@ -1,5 +1,8 @@
 #include"triangle.h"
 #include"common.h"
+
+#ifndef POLYGON_H
+#define POLYGON_H
 class polygon
 {
 	private:
@@ -24,5 +27,7 @@ class polygon
 	void printpoints();
 	void cutear();
 	void printtriangles();
+	bool ispointinside(double px,double py);
 
 };
+#endif
